@@ -1,0 +1,58 @@
+.dialog-container{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+mat-progress-bar{
+  position: absolute;
+  top: 8px;
+}
+
+/* Dialog content styling */
+mat-dialog-content {
+  padding: 20px;
+  min-width: 400px;
+  max-width: 500px;
+}
+
+/* Form field spacing */
+.mr-16 {
+  margin-right: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* Row container for side-by-side fields */
+div {
+  margin-bottom: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+/* Make sure form fields in the same row have proper flex */
+mat-form-field {
+  flex: 1;
+}
+
+/* Full width form fields should take entire row */
+mat-form-field.full-width {
+  flex: 1 1 100%;
+}
+
+/* Dialog actions styling */
+mat-dialog-actions {
+  padding: 8px 24px 24px 24px;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Dialog title styling */
+h2[mat-dialog-title] {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  font-weight: 500;
+}

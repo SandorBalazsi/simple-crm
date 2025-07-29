@@ -4,6 +4,7 @@ import {
   collection, 
   addDoc, 
   getDocs, 
+  getDoc,
   doc, 
   updateDoc, 
   deleteDoc,
@@ -26,13 +27,17 @@ export class FirebaseService {
     try {
       const usersCollection = collection(this.firestore, 'users');
       const docRef = await addDoc(usersCollection, {
+        userId: '',
         firstName: user.firstName,
         lastName: user.lastName,
+        email: user.email,
         birthDate: user.birthDate,
         street: user.street,
         zipCode: user.zipCode,
-        city: user.city
+        city: user.city,
+        
       });
+      await updateDoc(docRef, { userId: docRef.id });
       console.log('User added with ID: ', docRef.id);
       return docRef.id;
     } catch (error: any) {
@@ -60,6 +65,22 @@ export class FirebaseService {
       return users;
     } catch (error: any) {
       console.error('Error getting users: ', error);
+      throw error;
+    }
+  }
+
+  // Get a specific user by userId
+  async getUser(userId: string): Promise<User | null> {
+    try {
+      const userDocRef = doc(this.firestore, 'users', userId);
+      const userSnap = await getDoc(userDocRef);
+      if (userSnap.exists()) {
+        const user = new User({ id: userSnap.id, ...userSnap.data() });
+        return user;
+      }
+      return null;
+    } catch (error: any) {
+      console.error('Error getting user: ', error);
       throw error;
     }
   }

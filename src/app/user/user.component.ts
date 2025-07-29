@@ -6,6 +6,9 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DialogAddUserComponent } from '../dialog-add-user/dialog-add-user.component';
 import { User } from '../../models/user.class';
 import { MatCardModule } from '@angular/material/card';
+import { FirebaseService } from '../services/firebase.service';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 
 
@@ -13,15 +16,22 @@ import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-user',
-  imports: [MatIconModule, MatButtonModule, MatTooltipModule, MatDialogModule, MatCardModule],
+  imports: [MatIconModule, MatButtonModule, MatTooltipModule, MatDialogModule, MatCardModule, CommonModule],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })
 export class UserComponent {
 
   user: User = new User();
+  allUsers: User[] = [];
 
-constructor(public dialog: MatDialog){
+constructor(public dialog: MatDialog, private firebaseService: FirebaseService, private router: Router){
+}
+
+
+async ngOnInit(): Promise<void> {
+  this.allUsers = await this.firebaseService.getUsers();
+  console.log(this.allUsers);
 }
 
 openDialog() {
@@ -37,6 +47,14 @@ openDialog() {
         this.user = result;
       }
     });
+  }
+
+  goToUser(userId: string | undefined) {
+    if (userId) {
+      this.router.navigate(['/user/', userId]);
+    } else {
+      console.error('User ID is undefined. Navigation aborted.');
+    }
   }
 }
 

@@ -54,6 +54,7 @@ export class DialogAddUserComponent {
     try {
       const userId = await this.firebaseService.addUser(this.user);
       console.log('User saved to Firebase with ID:', userId);
+      this.user.userId = userId;
       this.dialogRef.close(this.user);
     } catch (error: any) {
       console.error('Error saving user:', error);
